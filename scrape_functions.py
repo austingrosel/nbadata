@@ -88,8 +88,7 @@ def get_boxscore(date, game_id):
     response = requests.get("http://data.nba.net/10s/prod/v1/{0}/{1}_boxscore.json".format(date, game_id))
 
     try:
-        df = pd.read_json(response.text)
-        df = json_normalize(df[df.index == 'activePlayers']['stats'][0])
+        df = pd.DataFrame(response.json()['stats']['activePlayers'])
         boxscore = df[['personId', 'teamId',
                        'min', 'points', 'fgm', 'fga',
                        'ftm', 'fta', 'tpm', 'tpa', 'offReb', 'defReb',
